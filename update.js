@@ -1,22 +1,33 @@
 var fs = require("fs");
-var script = "curl http://download.geonames.org/export/zip/US.zip > US.zip && unzip US.zip -d ./temp && rm US.zip";
+var exec = require("child_process").exec;
+var POSTALS_REPO = process.env.POSTALS_REPO
 
-console.log("downloading...");
-require('child_process').exec("curl http://download.geonames.org/export/zip/US.zip > US.zip", function(err){
-	if(err) return console.error(err);
+function pull(){
+	exec('git pull ' + POSTALS_REPO, function(err, stdout){
+		if(err) return console.error(err);
+		console.log(stdout);
+		download();
+	});
+}
 
-	console.log("unzipping...");
-	require('child_process').exec("unzip -o US.zip -d ./temp", function(err){
+function download(){
+	console.log("downloading...");
+	exec("curl http://download.geonames.org/export/zip/US.zip > US.zip", function(err){
 		if(err) return console.error(err);
 
-		console.log("cleanup...");
-		require('child_process').exec("rm US.zip", function(err){
+		console.log("unzipping...");
+		exec("unzip -o US.zip -d ./temp", function(err){
 			if(err) return console.error(err);
 
-			read();
+			console.log("cleanup...");
+			exec("rm US.zip", function(err){
+				if(err) return console.error(err);
+
+				read();
+			});
 		});
 	});
-});
+}
 
 function read() {
 	var postals = {};
@@ -52,9 +63,43 @@ function format(postals) {
 function save(data){
 	console.log("saving...");
 	fs.writeFileSync("./data/US.json", data);
-
-	console.log("done.");
+	add();
 }
 
 
+function add(){
+	console.log("add...");
+	exec('git add -v ./data/US.json', function(err, stdout, stderr){
+		if(stderr) console.log(stderr);
+		if(err) return console.error(err);
+		if(stdout) {
+			commit();
+		}
+		else {
+			console.log("no changes.");
+		}
+	});
+}
 
+function commit(){
+	console.log("commit...");
+	exec('git commit -m "auto update"', function(err, stdout, stderr){
+		if(stdout) console.log(stdout);
+		if(stderr) console.log(stderr);
+		if(err) return console.error(err);
+		push();
+	});
+}
+
+function push(){
+	console.log("push...");
+	exec('git push ' + POSTALS_REPO, function(err, stdout, stderr){
+		if(err) return console.error(err);
+		if(stdout) console.log(stdout);
+		if(stderr) console.log(stderr);
+
+		console.log("done.");
+	});
+}
+
+pull();
