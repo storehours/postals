@@ -1,0 +1,26 @@
+{
+  "name": "postals",
+  "version": "0.0.0",
+  "description": "postal code centroids",
+  "main": "postals.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storehours/postals.git"
+  },
+  "keywords": [
+    "postal",
+    "geo",
+    "centroids"
+  ],
+  "author": "William Wicks",
+  "license": "CC3",
+  "bugs": {
+    "url": "https://github.com/storehours/postals/issues"
+  },
+  "devDependencies": {
+    "gift": "0.0.6"
+  }
+}
