@@ -1,9 +1,8 @@
 var fs = require("fs");
 var exec = require("child_process").exec;
-var POSTALS_REPO = process.env.POSTALS_REPO
 
 function pull(){
-	exec('git pull ' + POSTALS_REPO, function(err, stdout){
+	exec('git init && git pull https://github.com/storehours/postals.git master', function(err, stdout){
 		if(err) return console.error(err);
 		console.log(stdout);
 		download();
@@ -93,7 +92,7 @@ function commit(){
 
 function push(){
 	console.log("push...");
-	exec('git push ' + POSTALS_REPO, function(err, stdout, stderr){
+	exec('git push https://'+process.env.AUTH_TOKEN+'@github.com/storehours/postals.git', function(err, stdout, stderr){
 		if(err) return console.error(err);
 		if(stdout) console.log(stdout);
 		if(stderr) console.log(stderr);
