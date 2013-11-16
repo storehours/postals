@@ -2,6 +2,7 @@ var fs = require("fs");
 var exec = require("child_process").exec;
 
 function pull(){
+	console.log('getting latest from https://github.com/storehours/postals');
 	exec('git init && git pull https://github.com/storehours/postals.git master', function(err, stdout){
 		if(err) return console.error(err);
 		console.log(stdout);
@@ -15,15 +16,9 @@ function download(){
 		if(err) return console.error(err);
 
 		console.log("unzipping...");
-		exec("unzip -o US.zip -d ./temp", function(err){
+		exec("jar xf US.zip", function(err){
 			if(err) return console.error(err);
-
-			console.log("cleanup...");
-			exec("rm US.zip", function(err){
-				if(err) return console.error(err);
-
-				read();
-			});
+			read();
 		});
 	});
 }
@@ -31,7 +26,7 @@ function download(){
 function read() {
 	var postals = {};
 	console.log("reading...");
-	var txt = fs.readFileSync("./temp/US.txt", "utf8");
+	var txt = fs.readFileSync("./US.txt", "utf8");
 	txt.split('\n').forEach(function(line){
 		if(!line) return;
 		var columns = line.split('\t');
