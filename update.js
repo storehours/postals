@@ -3,7 +3,10 @@ var exec = require("child_process").exec;
 
 function pull(){
 	console.log('getting latest from https://github.com/storehours/postals');
-	exec('git init && git pull https://github.com/storehours/postals.git master', function(err, stdout){
+	exec('git init && ' +
+		'git config --global user.name William Wicks && ' +
+		'git config --global user.email wjwicks@gmail.com && ' +
+		'git pull https://github.com/storehours/postals.git master', function(err, stdout){
 		if(err) return console.error(err);
 		console.log(stdout);
 		download();
