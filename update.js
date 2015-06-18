@@ -170,6 +170,6 @@ function push(){
 }
 
 //validate_diff();
-sort();
+//sort();
 //download();
-//pull();
+pull();
