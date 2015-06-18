@@ -1,6 +1,6 @@
 {
   "name": "postals",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "postal code centroids",
   "main": "postals.js",
   "scripts": {
@@ -21,6 +21,6 @@
     "url": "https://github.com/storehours/postals/issues"
   },
   "engines": {
-    "iojs": "1.0.x"
+    "iojs": "2.3.0"
   }
 }
