@@ -45,33 +45,17 @@ function sort(){
   var reader = postals.iterate(data);
 
   var start = 0;
-  var tab = c => c===0x09;
 
   do {
-    reader.next(tab); // read to end of country code
-    reader.next(tab); // read to end of postal code
-    reader.next(tab); // read to end of place name
-    reader.next(tab); // read to end of admin name1
-    reader.next(tab); // read to end of admin code1
-    reader.next(tab); // read to end of admin name2
-    reader.next(tab); // read to end of admin code2
-    reader.next(tab); // read to end of admin name3
-    var end = reader.next(tab); // read to end of admin code3
-
-    lines.push({
-      key: data.toString('utf8', start, end),
-      data: data.toString('utf8', start, (start = reader.next.line()))
-    });
-
-//    if(lines.length%10000===0) console.log(lines.length);
+    lines.push(data.toString('utf8', start, (start = reader.next.line())));
   }
   while(!reader.eof);
 
-  lines.sort((a, b) => a.key.localeCompare(b.key));
+  lines.sort((a, b) => a.localeCompare(b));
 
   console.log('writing data back to disk');
   var wstream = fs.createWriteStream(__dirname+'/allCountries.txt');
-  lines.forEach(l=> wstream.write(l.data));
+  lines.forEach(l=> wstream.write(l));
 
   wstream.on('finish', validate_diff);
   wstream.end();
@@ -186,6 +170,6 @@ function push(){
 }
 
 //validate_diff();
-//sort();
+sort();
 //download();
-pull();
+//pull();
